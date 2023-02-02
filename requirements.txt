@@ -1,0 +1,4 @@
+aiohttp
+discord
+toml
+git+https://github.com/gorialis/jishaku
