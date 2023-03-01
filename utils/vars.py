@@ -31,7 +31,7 @@ NotificationRoles = {
     },
     "polls": {
         "name": "Polls",
-        "role_id": 885167012265984031,
+        "role_id": 988339911839076363,
         "emoji": discord.PartialEmoji(name="\U0001f4ca"),
         "description": "Whenever a poll is being hosted",
     },
