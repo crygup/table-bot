@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Union
 
 import discord
 from discord.ext import commands
@@ -8,7 +8,7 @@ from discord.ext import commands
 if TYPE_CHECKING:
     from main import Table
 
-__all__ = ["NotificationRoles", "PronounsRoles", "Context"]
+__all__ = ["NotificationRoles", "PronounsRoles", "Context", "GuildContext"]
 
 NotificationRoles = {
     "random": {
@@ -75,3 +75,7 @@ PronounsRoles = {
 
 class Context(commands.Context):
     bot: Table
+
+
+class GuildContext(Context):
+    guild: discord.Guild

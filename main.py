@@ -1,13 +1,19 @@
+from __future__ import annotations
+
 import asyncio
 import datetime
 import logging
 import logging.handlers
 import sys
-from typing import Any, Dict
+from typing import TYPE_CHECKING, Any, Dict
 
 import discord
 import toml
 from discord.ext import commands
+from discord.ext.commands.errors import CommandError
+
+if TYPE_CHECKING:
+    from utils import Context
 
 config = toml.load("config.toml")
 
@@ -15,7 +21,7 @@ intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
 
-EXTS = {"jishaku", "cogs.roles"}
+EXTS = {"jishaku", "cogs.roles", "cogs.misc"}
 from cogs.roles.views import NotificationView, PronounsView
 
 
@@ -24,6 +30,7 @@ class Table(commands.Bot):
         super().__init__(
             command_prefix=commands.when_mentioned_or("!"),
             intents=intents,
+            allowed_mentions=discord.AllowedMentions.none(),
         )
         self.config: Dict[str, Any] = config
         self.logger: logging.Logger = logger
@@ -43,6 +50,23 @@ class Table(commands.Bot):
 
         self.uptime = discord.utils.utcnow()
         self.logger.info(f"Logged into {self.user}")
+
+    async def on_command_error(self, ctx: Context, error: CommandError):
+        if hasattr(ctx.command, "on_error"):
+            return
+
+        if isinstance(error, commands.CommandOnCooldown):
+            return
+
+        elif isinstance(error, commands.MissingRole):
+            assert ctx.guild
+            role = ctx.guild.get_role(int(error.missing_role))
+            if role is None:
+                return
+            await ctx.send(f'Role "{role.name}" is required to run this command.')
+            return
+
+        return await super().on_command_error(ctx, error)
 
 
 async def main():
