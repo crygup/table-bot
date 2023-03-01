@@ -22,9 +22,8 @@ from cogs.roles.views import NotificationView, PronounsView
 class Table(commands.Bot):
     def __init__(self, logger: logging.Logger):
         super().__init__(
-            command_prefix=commands.when_mentioned_or("t."),
+            command_prefix=commands.when_mentioned_or("!"),
             intents=intents,
-            help_command=None,
         )
         self.config: Dict[str, Any] = config
         self.logger: logging.Logger = logger
