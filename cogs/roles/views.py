@@ -23,7 +23,7 @@ class RoleSetup(discord.ui.Select):
             options=options,
             min_values=0,
             max_values=len(options),
-            custom_id="table_roles",
+            custom_id="table_view_roles",
         )
 
     async def callback(self, interaction: discord.Interaction):
